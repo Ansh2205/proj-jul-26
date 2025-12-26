@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FONTS: Plus Jakarta Sans + Poppins (Matches index.html) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="/style-scripts/script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/style-scripts/style.css">
+    <link rel="shortcut icon" href="/Assets/newLogoCropped.png" type="image/x-icon">
+    <title>Ignite'26 - Events</title>
+
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
+        background-color: #f8fafc; /* Slate-50 */
+        overflow-x: hidden;
+      }
+      
+      /* Smooth Gradient Background (Matches index.html) */
+      .blended-hero {
+          background: 
+            radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.15) 0%, transparent 25%),
+            radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 25%),
+            linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+          background-size: cover;
+          background-attachment: fixed;
+          position: relative;
+      }
+
+      /* Glassmorphism Utilities */
+      .glass {
+          background: rgba(255, 255, 255, 0.95);
+          border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+      
+      .glass-dark {
+          background: rgba(15, 23, 42, 0.95);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Scroll Reveal */
+      .js-scroll-reveal {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.3s cubic-bezier(0.5, 0, 0, 1);
+      }
+      .js-scroll-reveal.animate__animated {
+          opacity: 1;
+          transform: translateY(0);
+      }
+
+      /* Preloader */
+      #preloader {
+          position: fixed; 
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          opacity: 1;
+          visibility: visible;
+          z-index: 9999; 
+          transition: opacity 0.5s ease-out, visibility 0s 0.5s;
+          background: #0f172a;
+      }
+      #preloader.hidden {
+          opacity: 0;
+          visibility: hidden;
+      }
+      .loader {
+          width: 60px;
+          height: 60px;
+          border: 4px solid rgba(255, 255, 255, 0.1);
+          border-left-color: #6366f1; /* Indigo-500 */
+          border-radius: 50%;
+          animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      }
+      @keyframes spin { 100% { transform: rotate(360deg); } }
+
+      /* Modal */
+      #announcement-modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(15, 23, 42, 0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9998;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease;
+      }
+      #announcement-modal.active {
+          opacity: 1;
+          visibility: visible;
+      }
+
+      /* Gradient Text */
+      .text-gradient {
+          background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+      }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+<!-- Preloader -->
+<div id="preloader" class="flex items-center justify-center">
+    <div class="loader"></div>
+</div>
+
+<!-- Announcement Modal -->
+<div id="announcement-modal" class="hidden" style="display: none;">
+    <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-11/12 transform transition-all animate__animated animate__zoomIn border border-slate-100 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-pink-500"></div>
+        
+        <div class="text-center mb-6 pt-2">
+            <div class="mx-auto h-14 w-14 bg-indigo-50 rounded-full flex items-center justify-center mb-4">
+                <svg class="h-8 w-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">We're Hiring!</h2>
+        </div>
+        
+        <p class="text-center text-slate-600 mb-8 leading-relaxed">
+            Ignite'26 is looking for visionary <b>Management Members</b>. If you have a spark for event management, let's build something extraordinary together.
+            <br><br>
+            <a href="mailto:guptaansh2205@gmail.com" class="text-indigo-600 font-semibold hover:text-indigo-700 underline decoration-2 underline-offset-2 transition-colors">Get in touch →</a>
+        </p>
+        
+        <div class="flex justify-center">
+            <button id="close-modal-button" class="w-full bg-slate-900 text-white py-3 px-6 rounded-xl font-medium shadow-lg shadow-slate-200 hover:bg-indigo-600 hover:shadow-indigo-200 hover:-translate-y-0.5 transition-all duration-200">
+                Sounds Good
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Header (Identical to index.html) -->
+<header class="fixed w-full top-0 z-50 transition-all duration-300 glass border-b border-white/40">
+    <div class="container mx-auto flex flex-wrap py-3 px-6 items-center justify-between">
+        
+        <a class="flex items-center gap-3 text-slate-900 mb-0 group cursor-pointer" href="index.html">
+            <div class="relative">
+                <div class="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition duration-300 rounded-full"></div>
+                <img src="/Assets/newLogoCropped.png" alt="Logo" class="w-10 h-10 relative z-10 drop-shadow-sm">
+            </div>
+            <span class="text-xl font-bold tracking-tight group-hover:text-indigo-600 transition duration-300">Ignite'26</span>
+        </a>
+        
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+          <a href="index.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">Home</a>
+          <a href="events.html" class="text-indigo-600 py-2 border-b-2 border-indigo-600">Events</a>
+          <a href="schedule.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">Schedule</a>
+          <a href="about.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600 cursor-pointer">About</a>
+        </nav>
+        
+        <div class="hidden md:block">
+             <div class="px-5 py-2 rounded-full bg-slate-100 text-slate-500 text-xs font-bold uppercase tracking-wider border border-slate-200">
+                Registrations Soon
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden p-2 text-slate-600 hover:text-indigo-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </div>
+</header>
+
+<!-- Hero Section (Adapted from index.html blended-hero) -->
+<section class="blended-hero min-h-[60vh] flex items-center justify-center relative overflow-hidden pt-20">
+    
+    <!-- Decorative Elements -->
+    <div class="absolute top-1/4 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute bottom-1/4 right-10 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+
+    <div class="container mx-auto px-5 relative z-10 flex flex-col items-center">
+        <div class="glass-dark rounded-3xl p-10 md:p-14 max-w-4xl w-full text-center border border-white/10 shadow-2xl animate__animated animate__fadeInUp">
+            
+            <div class="inline-block px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md">
+                Competitions
+            </div>
+
+            <h1 class="font-extrabold text-4xl md:text-6xl leading-tight tracking-tight mb-4 text-white drop-shadow-sm">
+                The Four <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-pink-300">Arenas</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+                These events are the core of Ignite'26, designed to push the boundaries of innovation, strategy, and creativity.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Detailed Events Section -->
+<section class="py-24 bg-white">
+    <div class="container px-5 mx-auto max-w-6xl">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> 
+            
+            <!-- Group Dance (RED Style) -->
+            <div class="group relative bg-white rounded-2xl p-8 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1 border border-slate-100 overflow-hidden js-scroll-reveal">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-red-400 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center text-3xl shadow-inner">
+                        💃
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-bold uppercase tracking-wide">Cultural</span>
+                </div>
+                <h3 class="font-bold text-2xl text-slate-900 mb-3 group-hover:text-red-600 transition-colors">Group Dance Event</h3>
+                <p class="text-slate-600 leading-relaxed mb-6">
+                    A dazzling display of creativity and synchronization, where teams compete to showcase their talent in group choreography.
+                </p>
+                <div class="space-y-2 mb-6 text-sm text-slate-600 bg-slate-50 p-4 rounded-xl">
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span> Team Size: 7 members</div>
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span> Duration: 5-7 mins</div>
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span> Judging: Expression, Perfection, Depiction</div>
+                </div>
+                
+                <div class="pt-4 border-t border-slate-100 text-xs font-medium text-slate-500 flex flex-col gap-2">
+                    <p> Amenities: Green Room, Lunch & Refreshments provided.</p>
+                    <div class="flex justify-between items-center mt-2">
+                         <span>Contact: Mahip Hetawal <a href="tel:+919770515708" class="text-red-500 hover:underline">(+91 9770515708)</a></span>
+                         <span class="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chekmate (SLATE Style) -->
+            <div class="group relative bg-white rounded-2xl p-8 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:shadow-slate-500/10 transition-all duration-300 hover:-translate-y-1 border border-slate-100 overflow-hidden js-scroll-reveal">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-slate-700 to-slate-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-3xl shadow-inner">
+                        ♟️
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wide">Sports</span>
+                </div>
+                <h3 class="font-bold text-2xl text-slate-900 mb-3 group-hover:text-slate-700 transition-colors">Chekmate Challenge</h3>
+                <p class="text-slate-600 leading-relaxed mb-6">
+                    This is a test of strategic planning and intellectual foresight, challenging participants to outmaneuver their opponents.
+                </p>
+                 <div class="space-y-2 mb-6 text-sm text-slate-600 bg-slate-50 p-4 rounded-xl">
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-slate-600 mr-2"></span> Team Size: 1 member</div>
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-slate-600 mr-2"></span> Duration: 9 AM - 4 PM</div>
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-slate-600 mr-2"></span> Focus: Strategic thinking</div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 text-xs font-medium text-slate-500 flex flex-col gap-2">
+                    <p> Amenities: Chess Boards, Clocks, Lunch & Refreshments provided.</p>
+                    <div class="flex justify-between items-center mt-2">
+                         <span>Contact: Mahip Hetawal <a href="tel:+919770515708" class="text-slate-700 hover:underline">(+91 9770515708)</a></span>
+                         <span class="text-slate-700 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Finance (YELLOW Style) -->
+            <div class="group relative bg-white rounded-2xl p-8 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:shadow-yellow-500/10 transition-all duration-300 hover:-translate-y-1 border border-slate-100 overflow-hidden js-scroll-reveal">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-500 to-amber-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-yellow-50 text-yellow-600 flex items-center justify-center text-3xl shadow-inner">
+                        💰
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-yellow-50 text-yellow-700 text-xs font-bold uppercase tracking-wide">Financial</span>
+                </div>
+                <h3 class="font-bold text-2xl text-slate-900 mb-3 group-hover:text-yellow-600 transition-colors">The Financial Frontier</h3>
+                <p class="text-slate-600 leading-relaxed mb-6">
+                    An intense business quiz designed to test participants' knowledge of finance, market trends, and economic principles.
+                </p>
+                <div class="space-y-2 mb-6 text-sm text-slate-600 bg-slate-50 p-4 rounded-xl">
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span> Team Size: Up to 2 members</div>
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span> No AI/Mobile phones allowed</div>
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span> Flow: Pen-Paper -> Rapid Fire -> Buzzer</div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 text-xs font-medium text-slate-500 flex flex-col gap-2">
+                    <p> Amenities: Buzzers, Tables, Lunch & Refreshments provided.</p>
+                    <div class="flex justify-between items-center mt-2">
+                         <span>Contact: Mahip Hetawal <a href="tel:+919770515708" class="text-yellow-600 hover:underline">(+91 9770515708)</a></span>
+                         <span class="text-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design (PINK Style) -->
+            <div class="group relative bg-white rounded-2xl p-8 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:shadow-pink-500/10 transition-all duration-300 hover:-translate-y-1 border border-slate-100 overflow-hidden js-scroll-reveal">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-rose-400 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-50 text-pink-500 flex items-center justify-center text-3xl shadow-inner">
+                        🎨
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-pink-50 text-pink-600 text-xs font-bold uppercase tracking-wide">Creative</span>
+                </div>
+                <h3 class="font-bold text-2xl text-slate-900 mb-3 group-hover:text-pink-600 transition-colors">Design Event</h3>
+                <p class="text-slate-600 leading-relaxed mb-6">
+                    Participants will be tasked with solving a problem using innovative and visually engaging design solutions.
+                </p>
+                 <div class="space-y-2 mb-6 text-sm text-slate-600 bg-slate-50 p-4 rounded-xl">
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-pink-500 mr-2"></span> Focus: Eco-friendly innovation</div>
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-pink-500 mr-2"></span> Objective: Aesthetic & functional solution</div>
+                    <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-pink-500 mr-2"></span> Rules: Revealed at event</div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 text-xs font-medium text-slate-500 flex flex-col gap-2">
+                    <p> Amenities: Lunch & Refreshments provided.</p>
+                    <div class="flex justify-between items-center mt-2">
+                         <span>Contact: Kanika Verma <a href="tel:+917974909468" class="text-pink-600 hover:underline">(+91 7974909468)</a></span>
+                         <span class="text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Footer (Identical to index.html) -->
+<footer class="bg-slate-900 border-t border-slate-800 text-slate-400">
+  <div class="container px-5 py-12 mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center gap-3 mb-4 md:mb-0">
+            <div class="bg-white/10 p-2 rounded-lg">
+                <img src="/Assets/newLogoCropped.png" alt="" width="30px" height="30px" class="opacity-90">
+            </div>
+            <div>
+                <span class="block text-xl font-bold text-white">Ignite'26</span>
+                <span class="text-xs uppercase tracking-widest opacity-60">The Innovation League</span>
+            </div>
+        </div>
+        
+        <div class="text-center md:text-right">
+             <div class="flex gap-6 justify-center md:justify-end mb-4">
+                 <a href="#" class="hover:text-indigo-400 transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                 <a href="#" class="hover:text-pink-400 transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+             </div>
+            <p class="text-sm">© 2025 Ansh Gupta. All rights reserved.</p>
+        </div>
+      </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // SCROLL REVEAL LOGIC
+    const revealElements = document.querySelectorAll('.js-scroll-reveal');
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -50px 0px', 
+        threshold: 0.1 
+    };
+
+    const observerCallback = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                observer.unobserve(entry.target);
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    revealElements.forEach(element => {
+        observer.observe(element);
+    });
+
+    // HEADER SCROLL EFFECT (Matches index.html)
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) {
+            header.classList.add('shadow-lg', 'bg-white/95');
+            header.classList.remove('bg-white/80', 'border-transparent');
+        } else {
+            header.classList.remove('shadow-lg', 'bg-white/95');
+            header.classList.add('bg-white/80');
+        }
+    });
+
+    // PRELOADER & MODAL LOGIC (Matches index.html)
+    window.onload = function() {
+        const preloader = document.getElementById('preloader');
+        const modal = document.getElementById('announcement-modal');
+        const closeModalButton = document.getElementById('close-modal-button');
+        
+        const MINIMUM_DISPLAY_TIME = 800; 
+        
+        const finishLoading = () => {
+            if (preloader) {
+                preloader.classList.add('hidden');
+            }
+            setTimeout(() => {
+                if (modal) {
+                    modal.style.display = 'flex'; 
+                    setTimeout(() => {
+                        modal.classList.add('active');
+                    }, 10); 
+                }
+            }, 500);
+        };
+
+        setTimeout(finishLoading, MINIMUM_DISPLAY_TIME);
+
+        if (closeModalButton) {
+            closeModalButton.addEventListener('click', () => {
+                if (modal) {
+                    modal.classList.remove('active');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+    };
+});
+</script>
+</body>
+</html>

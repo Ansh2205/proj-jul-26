@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ignite'26 - Registration</title>
+    
+    <!-- 1. Load Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- 2. Fonts: Plus Jakarta Sans + Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- 3. Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="shortcut icon" href="/Assets/newLogoCropped.png" type="image/x-icon">
+
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
+        background-color: #f8fafc; /* Slate-50 */
+      }
+
+      /* Smooth Gradient Background (Matches Theme) */
+      .blended-hero {
+          background: 
+            radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.15) 0%, transparent 25%),
+            radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 25%),
+            linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+          background-size: cover;
+          background-attachment: fixed;
+          position: relative;
+      }
+
+      /* Glassmorphism Header */
+      .glass-header {
+          background: rgba(255, 255, 255, 0.95);
+          border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      }
+
+      /* Transitions */
+      .theme-transition {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .member-card-enter {
+          animation: enter 0.3s ease-out forwards;
+      }
+      .team-card-enter {
+          animation: enter 0.4s ease-out forwards;
+      }
+      @keyframes enter {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Spinner */
+      .spinner {
+          border-color: #fff;
+          border-top-color: transparent;
+          animation: spin 1s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Preloader */
+      #preloader {
+          position: fixed; width: 100%; height: 100%; top: 0; left: 0;
+          opacity: 1; visibility: visible; z-index: 9999; 
+          transition: opacity 0.5s ease-out, visibility 0s 0.5s;
+          background: #0f172a;
+      }
+      #preloader.hidden { opacity: 0; visibility: hidden; }
+      .loader {
+          width: 60px; height: 60px;
+          border: 4px solid rgba(255, 255, 255, 0.1);
+          border-left-color: #6366f1; border-radius: 50%;
+          animation: spin 1s infinite;
+      }
+
+      /* Print Styles */
+      @media print {
+          body { background: white !important; color: black !important; }
+          body > *:not(#invoice-modal) { display: none !important; }
+          #invoice-modal { 
+              position: absolute !important; left: 0 !important; top: 0 !important; 
+              display: block !important; width: 100% !important; height: auto !important; 
+              background: white !important; z-index: 9999 !important; padding: 0 !important;
+          }
+          .print-hide { display: none !important; }
+          .print-content { box-shadow: none !important; border: none !important; width: 100% !important; max-width: 100% !important; }
+      }
+      
+      /* Form Element Styling */
+      input, select {
+          transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      input:focus, select:focus {
+          outline: none;
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+    </style>
+</head>
+
+<body class="antialiased text-slate-800 bg-slate-50">
+
+    <!-- Preloader -->
+    <div id="preloader" class="flex items-center justify-center">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header (Consistent with other pages) -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300 glass-header backdrop-blur-lg shadow-sm">
+        <div class="container mx-auto flex flex-wrap py-3 px-6 items-center justify-between">
+            <a class="flex items-center gap-3 text-slate-900 mb-0 group cursor-pointer" href="index.html">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition duration-300 rounded-full"></div>
+                    <img src="/Assets/newLogoCropped.png" alt="Logo" class="w-10 h-10 relative z-10 drop-shadow-sm">
+                </div>
+                <span class="text-xl font-bold tracking-tight group-hover:text-indigo-600 transition duration-300">Ignite'26</span>
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+                <a href="index.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">Home</a>
+                <a href="events.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">Events</a>
+                <a href="schedule.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">Schedule</a>
+                <a href="about.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">About</a>
+            </nav>
+            
+            <div class="hidden md:block">
+                <span class="px-5 py-2 rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-indigo-200">
+                    Registering Now
+                </span>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden p-2 text-slate-600 hover:text-indigo-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="blended-hero pt-32 pb-24 text-center px-5">
+        <div class="container mx-auto max-w-4xl relative z-10">
+            <span class="inline-block px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md animate__animated animate__fadeIn">
+                Official Portal
+            </span>
+            <h1 class="font-extrabold text-4xl md:text-6xl leading-tight tracking-tight mb-6 text-white drop-shadow-sm animate__animated animate__fadeInUp">
+                Team <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-pink-300">Registration</span>
+            </h1>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto font-light leading-relaxed animate__animated animate__fadeInUp animate__delay-1s">
+                Secure your spot in The Innovation League. Manage your teams, members, and payments all in one place.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <div class="container mx-auto max-w-7xl px-5 py-12 -mt-16 relative z-20">
+        
+        <!-- Instructions Card -->
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-10 animate__animated animate__fadeInUp animate__delay-1s">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 shadow-sm">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                Complete Registration Guide
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-slate-600">
+                
+                <!-- Step 1 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center font-bold text-indigo-600 text-sm border border-indigo-100">1</div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">Organization Details</h3>
+                        <p class="text-sm leading-relaxed mb-2">
+                            Enter your school/organization name and the contact details of the lead administrator or teacher.
+                        </p>
+                        <ul class="list-disc pl-4 text-xs text-slate-500 space-y-1">
+                            <li><strong>Individual Participants:</strong> Enter your own name and contact details to generate a personal invoice.</li>
+                            <li><strong>Groups:</strong> Ensure the contact person is available for coordination.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center font-bold text-indigo-600 text-sm border border-indigo-100">2</div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">Add Teams & Members</h3>
+                        <p class="text-sm leading-relaxed mb-2">
+                            Click <strong>"Add Team"</strong> for each competition entry. Select the event type (e.g., Chess, Dance).
+                        </p>
+                        <ul class="list-disc pl-4 text-xs text-slate-500 space-y-1">
+                            <li><strong>Auto-Naming:</strong> Team names are auto-generated based on your organization but can be edited.</li>
+                            <li><strong>Limits:</strong> The form automatically enforces min/max member limits per event.</li>
+                            <li><strong>Restrictions:</strong> Only two teams per organization are allowed for a single event type.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center font-bold text-indigo-600 text-sm border border-indigo-100">3</div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">Review & Verify</h3>
+                        <p class="text-sm leading-relaxed mb-2">
+                            Check the <strong>Registration Summary</strong> on the right sidebar.
+                        </p>
+                        <ul class="list-disc pl-4 text-xs text-slate-500 space-y-1">
+                            <li>Ensure member counts are correct.</li>
+                            <li>Verify the subtotal and the standard 2% convenience fee.</li>
+                            <li>Confirm the final Grand Total before proceeding.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-indigo-50 rounded-full flex items-center justify-center font-bold text-indigo-600 text-sm border border-indigo-100">4</div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">Secure Payment</h3>
+                        <p class="text-sm leading-relaxed mb-2">
+                            Click <strong>"Proceed to Payment"</strong> to open the secure Razorpay gateway.
+                        </p>
+                        <ul class="list-disc pl-4 text-xs text-slate-500 space-y-1">
+                            <li>Multiple payment options available (UPI, Card, Netbanking).</li>
+                            <li>Upon success, you will instantly receive a downloadable invoice with a unique Payment ID.</li>
+                            <li><strong>Note:</strong> Limited slots for Chekmate (Chess) & Financial Frontier. Register early!</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- === LEFT COLUMN: FORM === -->
+            <form id="registration-form" class="flex-1 space-y-8">
+
+                <!-- 1. Organization Details -->
+                <section class="bg-white p-8 rounded-2xl shadow-lg border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-900 mb-6 border-b border-slate-100 pb-2">Organization Details</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Organization / School Name</label>
+                            <input type="text" id="org-name" name="org-name" required class="w-full bg-slate-50 text-slate-900 rounded-lg border-slate-200 p-3 focus:bg-white transition-colors" placeholder="e.g. St. Mary's School">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Contact Person</label>
+                            <input type="text" id="contact-person" name="contact-person" required class="w-full bg-slate-50 text-slate-900 rounded-lg border-slate-200 p-3 focus:bg-white transition-colors" placeholder="Admin or Lead Teacher">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Contact Email</label>
+                            <input type="email" id="contact-email" name="contact-email" required class="w-full bg-slate-50 text-slate-900 rounded-lg border-slate-200 p-3 focus:bg-white transition-colors" placeholder="email@school.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Contact Phone</label>
+                            <input type="tel" id="contact-phone" name="contact-phone" required class="w-full bg-slate-50 text-slate-900 rounded-lg border-slate-200 p-3 focus:bg-white transition-colors" placeholder="+91 98765 43210">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Teams Section -->
+                <section>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-slate-900">Your Teams</h3>
+                        <button type="button" id="add-team-btn" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-lg shadow-indigo-200 transition-all active:scale-95 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            Add Team
+                        </button>
+                    </div>
+
+                    <div id="teams-container" class="space-y-6">
+                        <!-- Default: No teams message -->
+                        <div id="no-teams-message" class="text-center py-16 px-6 bg-white rounded-2xl shadow-sm border border-dashed border-slate-300">
+                            <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-slate-900">No teams added yet</h3>
+                            <p class="text-slate-500">Click the button above to start adding your competition teams.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" id="submit-btn" class="w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white text-lg font-bold rounded-xl shadow-xl shadow-indigo-200 transition-all transform hover:-translate-y-1 flex justify-center items-center">
+                        <span class="button-text">Proceed to Payment</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </button>
+                    <p class="text-center text-xs text-slate-400 mt-4 flex items-center justify-center gap-2">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
+                        Secured by Razorpay. A 2% convenience fee applies.
+                    </p>
+                </div>
+
+            </form>
+
+            <!-- === RIGHT COLUMN: SUMMARY === -->
+            <div class="w-full lg:w-[400px] mt-8 lg:mt-0">
+                <div class="sticky top-24">
+                    <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+                        <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center border-b border-slate-100 pb-4">
+                            Registration Summary
+                        </h2>
+
+                        <!-- Summary Team List -->
+                        <div id="summary-team-list" class="space-y-4 mb-6 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                            <p class="text-slate-400 text-sm text-center py-4">Add teams to see breakdown</p>
+                        </div>
+
+                        <!-- Price Display -->
+                        <div class="bg-slate-900 rounded-xl p-6 text-center relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-indigo-600 opacity-20 blur-xl group-hover:opacity-30 transition-opacity"></div>
+                            <span class="block text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 relative z-10">Grand Total</span>
+                            <div id="grand-total-price" class="text-4xl font-extrabold text-white relative z-10">₹0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Success/Error Modal -->
+    <div id="reg-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+        <div class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity"></div>
+        <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full transform transition-all scale-100 animate__animated animate__zoomIn">
+            <div class="text-center">
+                <div id="modal-icon" class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-indigo-50 mb-4"></div>
+                <h3 id="modal-title" class="text-xl font-bold text-slate-900 mb-2"></h3>
+                <p id="modal-message" class="text-slate-600 mb-6 text-sm leading-relaxed"></p>
+                <button id="modal-close-btn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-colors">Okay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Modal -->
+    <div id="invoice-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden print-this-section">
+        <div class="fixed inset-0 bg-slate-900/90 backdrop-blur-md transition-opacity print-hide"></div>
+        
+        <div class="relative bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto print-content">
+            <!-- Header -->
+            <div class="bg-slate-50 p-8 border-b border-slate-100 flex justify-between items-start">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Registration Invoice</h2>
+                    <p class="text-sm text-slate-500 mt-1">Ignite'26 - The Innovation League</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Payment Status</p>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-1">
+                        PAID
+                    </span>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-8">
+                <!-- Info Grid -->
+                <div class="grid grid-cols-2 gap-8 mb-8 text-sm">
+                    <div>
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Billed To</p>
+                        <p id="invoice-org-name" class="font-bold text-slate-900 text-lg"></p>
+                        <p id="invoice-org-person" class="text-slate-600"></p>
+                        <p id="invoice-org-email" class="text-slate-600"></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Transaction Ref</p>
+                        <p id="invoice-payment-id" class="font-mono text-slate-700"></p>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="border rounded-lg overflow-hidden mb-8">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase">Team</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase">Event</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-slate-500 uppercase">Members</th>
+                                <th class="px-4 py-3 text-right text-xs font-bold text-slate-500 uppercase">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoice-team-rows" class="divide-y divide-slate-100 bg-white text-sm text-slate-700">
+                            <!-- Rows injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Totals -->
+                <div class="flex justify-end">
+                    <div class="w-64 space-y-2">
+                        <div class="flex justify-between text-slate-600">
+                            <span>Subtotal</span>
+                            <span id="invoice-subtotal" class="font-medium">₹0</span>
+                        </div>
+                        <div class="flex justify-between text-slate-600">
+                            <span>Fee (2%)</span>
+                            <span id="invoice-fee" class="font-medium">₹0</span>
+                        </div>
+                        <div class="flex justify-between text-slate-900 text-xl font-bold pt-4 border-t border-slate-100">
+                            <span>Total</span>
+                            <span id="invoice-grand-total">₹0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="bg-slate-50 p-6 flex justify-end gap-3 print-hide">
+                <button id="invoice-close-btn" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors">Close</button>
+                <button id="invoice-print-btn" class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200">Print Invoice</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC (Unchanged Functionality) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- PRELOADER LOGIC ---
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                if (preloader) {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => preloader.style.display = 'none', 500);
+                }
+            }, 800);
+
+            let currentPrice = 0; 
+            let subTotal = 0;     
+            let convenienceFee = 0; 
+            let animationFrameId = null;
+            let teamCounter = 0; 
+
+            // Constants
+            const pricePerPerson = 500;
+            const convenienceFeeRate = 0.02; // 2%
+
+            const eventDetails = {
+                '': { price: 0, maxMembers: 99, minMembers: 1 },
+                'chess': { price: pricePerPerson, maxMembers: 1, minMembers: 1 },
+                'design': { price: pricePerPerson, maxMembers: 3, minMembers: 1 },
+                'finance': { price: pricePerPerson, maxMembers: 2, minMembers: 1 },
+                'dance': { price: 2500, maxMembers: 7, minMembers: 7 }
+            };
+
+            // Elements
+            const form = document.getElementById('registration-form');
+            const orgNameInput = document.getElementById('org-name');
+            const addTeamBtn = document.getElementById('add-team-btn');
+            const teamsContainer = document.getElementById('teams-container');
+            const noTeamsMessage = document.getElementById('no-teams-message');
+            const submitBtn = document.getElementById('submit-btn');
+            const submitBtnText = submitBtn.querySelector('.button-text');
+            const summaryTeamList = document.getElementById('summary-team-list');
+            const priceEl = document.getElementById('grand-total-price');
+
+            // Modals
+            const modal = document.getElementById('reg-modal');
+            const modalIcon = document.getElementById('modal-icon');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+
+            const invoiceModal = document.getElementById('invoice-modal');
+            const invoiceCloseBtn = document.getElementById('invoice-close-btn');
+            const invoicePrintBtn = document.getElementById('invoice-print-btn');
+            const invoicePaymentId = document.getElementById('invoice-payment-id');
+            const invoiceOrgName = document.getElementById('invoice-org-name');
+            const invoiceOrgPerson = document.getElementById('invoice-org-person');
+            const invoiceOrgEmail = document.getElementById('invoice-org-email');
+            const invoiceTeamRows = document.getElementById('invoice-team-rows');
+            const invoiceSubtotal = document.getElementById('invoice-subtotal');
+            const invoiceFee = document.getElementById('invoice-fee');
+            const invoiceGrandTotal = document.getElementById('invoice-grand-total');
+
+            // Icons
+            const modalIcons = {
+                success: {
+                    svg: `<svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`
+                },
+                warning: {
+                    svg: `<svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`
+                }
+            };
+
+            // Listeners
+            addTeamBtn.addEventListener('click', addNewTeam);
+            modalCloseBtn.addEventListener('click', hideModal);
+            invoiceCloseBtn.addEventListener('click', hideInvoice);
+            invoicePrintBtn.addEventListener('click', printInvoice);
+            orgNameInput.addEventListener('input', updateAllTeamNamePlaceholders);
+
+            form.addEventListener('change', (e) => {
+                if (e.target.classList.contains('team-event-select')) {
+                    handleEventChange(e.target);
+                }
+                updateSummary();
+            });
+
+            form.addEventListener('input', (e) => {
+                if (e.target.classList.contains('team-name-input')) {
+                    updateSummary();
+                }
+            });
+
+            form.addEventListener('click', (e) => {
+                const teamCard = e.target.closest('.team-card');
+                if (!teamCard) return;
+
+                if (e.target.closest('.add-member-btn')) {
+                    addMember(teamCard);
+                    updateMemberControls(teamCard);
+                    updateSummary();
+                }
+                if (e.target.closest('.remove-member-btn')) {
+                    removeMember(teamCard);
+                    updateMemberControls(teamCard);
+                    updateSummary();
+                }
+                if (e.target.closest('.remove-team-btn')) {
+                    teamCard.remove();
+                    updateSummary();
+                }
+                if (e.target.closest('.remove-member-card-btn')) {
+                    e.target.closest('.member-card').remove();
+                    renumberMembers(teamCard);
+                    updateMemberControls(teamCard);
+                    updateSummary();
+                }
+            });
+
+            form.addEventListener('submit', handleFormSubmit);
+
+            // Logic Functions
+            function addNewTeam() {
+                teamCounter++;
+                noTeamsMessage.classList.add('hidden');
+
+                const teamCard = document.createElement('div');
+                teamCard.className = 'team-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6 team-card-enter relative';
+                teamCard.dataset.teamId = teamCounter;
+
+                teamCard.innerHTML = `
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                                ${document.querySelectorAll('.team-card').length + 1}
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800">New Team</h3>
+                        </div>
+                        <button type="button" class="remove-team-btn text-slate-400 hover:text-red-500 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Team Name</label>
+                            <input type="text" id="team-${teamCounter}-name" name="team-${teamCounter}-name" required class="team-name-input w-full bg-slate-50 text-slate-900 rounded-lg border-slate-200 p-3 focus:bg-white transition-colors" placeholder="e.g. Checkmate Kings">
+                            <p class="team-name-hint text-xs text-indigo-500 mt-2 font-medium" style="display: none;">&nbsp;</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Select Event</label>
+                            <select id="team-${teamCounter}-event" name="team-${teamCounter}-event" required class="team-event-select w-full bg-slate-50 text-slate-900 rounded-lg border-slate-200 p-3 focus:bg-white transition-colors">
+                                <option value="">Choose an event...</option>
+                                <option value="chess">Chekmate Challenge (Chess)</option>
+                                <option value="design">Design Event</option>
+                                <option value="finance">The Financial Frontier</option>
+                                <option value="dance">Group Dance</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-sm font-bold text-slate-700">Team Members</h4>
+                            <div class="flex gap-2">
+                                <button type="button" class="remove-member-btn px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">Remove</button>
+                                <button type="button" class="add-member-btn px-3 py-1.5 text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">Add Member</button>
+                            </div>
+                        </div>
+                        <div class="member-container space-y-3">
+                            <!-- Members go here -->
+                        </div>
+                        <div class="event-member-notice hidden mt-3 p-3 bg-blue-50 text-blue-700 text-xs rounded-lg font-medium flex items-start gap-2">
+                            <svg class="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span></span>
+                        </div>
+                    </div>
+                `;
+                teamsContainer.appendChild(teamCard);
+                addMember(teamCard);
+                updateMemberControls(teamCard);
+                updateTeamName(teamCard);
+                updateSummary();
+            }
+
+            function updateAllTeamNamePlaceholders() {
+                teamsContainer.querySelectorAll('.team-card').forEach(updateTeamName);
+            }
+
+            function generateTeamName(orgName, eventValue) {
+                if (!orgName || !eventValue) return "";
+                const cleanOrg = orgName.trim().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/[\s_-]+/g, '-');
+                return `${cleanOrg}-${eventValue}`;
+            }
+
+            function updateTeamName(teamCard) {
+                const orgName = orgNameInput.value;
+                const eventValue = teamCard.querySelector('.team-event-select').value;
+                const teamNameInput = teamCard.querySelector('.team-name-input');
+                const teamNameHint = teamCard.querySelector('.team-name-hint');
+                const generatedName = generateTeamName(orgName, eventValue);
+
+                if (generatedName) {
+                    if (teamNameInput.value === "" || (teamNameInput.dataset.autoGenerated === 'true')) {
+                        teamNameInput.value = generatedName;
+                        teamNameInput.dataset.autoGenerated = 'true';
+                    }
+                    teamNameHint.textContent = `Suggested: ${generatedName}`;
+                    teamNameHint.style.display = 'block';
+                } else {
+                    teamNameHint.style.display = 'none';
+                }
+                teamNameInput.oninput = () => {
+                    teamNameInput.dataset.autoGenerated = 'false';
+                    updateSummary();
+                };
+            }
+
+            function handleEventChange(eventSelect) {
+                const teamCard = eventSelect.closest('.team-card');
+                const eventValue = eventSelect.value;
+                const details = eventDetails[eventValue];
+                const memberContainer = teamCard.querySelector('.member-container');
+                const notice = teamCard.querySelector('.event-member-notice');
+                const noticeText = notice.querySelector('span');
+
+                memberContainer.innerHTML = '';
+                for (let i = 1; i <= details.minMembers; i++) addMember(teamCard, i);
+
+                if (eventValue) {
+                    let msg = "";
+                    if(eventValue === 'dance') msg = "Fixed at 7 members. Fee: ₹2500/team.";
+                    else if(eventValue === 'chess') msg = "Fixed at 1 member.";
+                    else msg = `Max ${details.maxMembers} members allowed.`;
+                    
+                    noticeText.textContent = msg;
+                    notice.classList.remove('hidden');
+                } else {
+                    notice.classList.add('hidden');
+                }
+
+                updateMemberControls(teamCard);
+                updateTeamName(teamCard);
+            }
+
+            function updateMemberControls(teamCard) {
+                const eventValue = teamCard.querySelector('.team-event-select').value;
+                const details = eventDetails[eventValue];
+                const memberCount = teamCard.querySelectorAll('.member-card').length;
+                teamCard.querySelector('.add-member-btn').disabled = (memberCount >= details.maxMembers);
+                teamCard.querySelector('.remove-member-btn').disabled = (memberCount <= details.minMembers);
+            }
+
+            function addMember(teamCard, memberNum) {
+                const memberContainer = teamCard.querySelector('.member-container');
+                const teamId = teamCard.dataset.teamId;
+                const currentMemberCount = memberContainer.querySelectorAll('.member-card').length;
+                const memberNumber = memberNum || (currentMemberCount + 1);
+                const eventValue = teamCard.querySelector('.team-event-select').value;
+                const details = eventDetails[eventValue];
+                const canRemove = memberNumber > details.minMembers;
+
+                const memberCard = document.createElement('div');
+                memberCard.className = 'member-card bg-slate-50 p-4 rounded-xl border border-slate-100 member-card-enter group hover:border-indigo-200 transition-colors';
+                memberCard.dataset.memberNum = memberNumber;
+
+                memberCard.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider member-label">Member ${memberNumber}</span>
+                        ${canRemove ? `
+                        <button type="button" class="remove-member-card-btn text-slate-400 hover:text-red-500">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>` : ''}
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <input type="text" name="team-${teamId}-member-${memberNumber}-name" required class="bg-white rounded-lg border-slate-200 text-sm p-2.5 focus:border-indigo-500" placeholder="Full Name">
+                        <input type="email" name="team-${teamId}-member-${memberNumber}-email" required class="bg-white rounded-lg border-slate-200 text-sm p-2.5 focus:border-indigo-500" placeholder="Email Address">
+                        <input type="tel" name="team-${teamId}-member-${memberNumber}-phone" required class="bg-white rounded-lg border-slate-200 text-sm p-2.5 focus:border-indigo-500" placeholder="Phone Number">
+                    </div>
+                `;
+                memberContainer.appendChild(memberCard);
+            }
+
+            function removeMember(teamCard) {
+                const memberContainer = teamCard.querySelector('.member-container');
+                if (memberContainer.lastChild) memberContainer.removeChild(memberContainer.lastChild);
+            }
+
+            function renumberMembers(teamCard) {
+                teamCard.querySelectorAll('.member-card').forEach((card, index) => {
+                    const num = index + 1;
+                    card.querySelector('.member-label').textContent = `Member ${num}`;
+                    card.dataset.memberNum = num;
+                });
+            }
+
+            function updateSummary() {
+                const allTeams = teamsContainer.querySelectorAll('.team-card');
+                let newSubTotal = 0;
+                let summaryHTML = '';
+
+                if (allTeams.length === 0) {
+                    summaryHTML = '<div class="text-center py-8"><p class="text-slate-400 italic text-sm">No teams added yet.</p></div>';
+                    noTeamsMessage.classList.remove('hidden');
+                } else {
+                    noTeamsMessage.classList.add('hidden');
+                    allTeams.forEach((teamCard, index) => {
+                        // Update card numbering
+                        teamCard.querySelector('.w-8').textContent = index + 1;
+                    });
+                }
+
+                allTeams.forEach((teamCard) => {
+                    const teamName = teamCard.querySelector('.team-name-input').value || "Unnamed Team";
+                    const eventSelect = teamCard.querySelector('.team-event-select');
+                    const eventValue = eventSelect.value;
+                    const eventName = eventSelect.options[eventSelect.selectedIndex].text;
+                    const memberCount = teamCard.querySelectorAll('.member-card').length;
+                    const details = eventDetails[eventValue];
+
+                    let teamSubtotal = 0;
+                    let desc = "Select Event";
+
+                    if (eventValue === 'dance') {
+                        teamSubtotal = details.price;
+                        desc = "Group Dance (Fixed Price)";
+                    } else if (eventValue) {
+                        teamSubtotal = details.price * memberCount;
+                        desc = `${memberCount} Member(s) × ₹${details.price}`;
+                    }
+
+                    newSubTotal += teamSubtotal;
+
+                    summaryHTML += `
+                        <div class="flex justify-between items-start py-3 border-b border-slate-50 last:border-0">
+                            <div>
+                                <p class="font-bold text-slate-800 text-sm">${teamName}</p>
+                                <p class="text-xs text-slate-500">${eventName}</p>
+                                <p class="text-xs text-indigo-500 mt-0.5">${desc}</p>
+                            </div>
+                            <span class="font-bold text-slate-900 text-sm">₹${teamSubtotal.toLocaleString('en-IN')}</span>
+                        </div>
+                    `;
+                });
+
+                let newFee = Math.ceil(newSubTotal * convenienceFeeRate);
+                const newGrandTotal = newSubTotal + newFee;
+                subTotal = newSubTotal;
+                convenienceFee = newFee;
+
+                if (allTeams.length > 0) {
+                    summaryHTML += `
+                        <div class="mt-4 pt-4 border-t-2 border-slate-100 space-y-2">
+                            <div class="flex justify-between text-xs text-slate-500">
+                                <span>Subtotal</span>
+                                <span>₹${newSubTotal.toLocaleString('en-IN')}</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-500">
+                                <span>Convenience Fee (2%)</span>
+                                <span>₹${newFee.toLocaleString('en-IN')}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                summaryTeamList.innerHTML = summaryHTML;
+                priceEl.innerText = `₹${newGrandTotal.toLocaleString('en-IN')}`;
+                currentPrice = newGrandTotal;
+            }
+
+            // Form Submit Logic (Identical)
+            async function handleFormSubmit(e) {
+                e.preventDefault();
+                setSubmitLoading(true);
+
+                const registrationData = getFormData();
+
+                if (currentPrice <= 0) {
+                    showModal('Action Required', 'Please add at least one valid team to proceed.', 'warning');
+                    setSubmitLoading(false);
+                    return;
+                }
+
+                try {
+                    const response = await fetch('http://localhost:3000/create-order', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(registrationData)
+                    });
+
+                    if (!response.ok) throw new Error('Server Error');
+                    const order = await response.json();
+
+                    if (!order.id || !order.registrationId) throw new Error('Invalid Server Response');
+
+                    openRazorpayCheckout(order.id, currentPrice * 100, registrationData, order.registrationId);
+
+                } catch (error) {
+                    console.error(error);
+                    showModal('Connection Error', 'Could not connect to the payment server. Please ensure the backend is running.', 'warning');
+                    setSubmitLoading(false);
+                }
+            }
+
+            function getFormData() {
+                const formData = new FormData(form);
+                const data = {
+                    organization: {
+                        name: formData.get('org-name'),
+                        contactPerson: formData.get('contact-person'),
+                        contactEmail: formData.get('contact-email'),
+                        contactPhone: formData.get('contact-phone'),
+                    },
+                    teams: [],
+                    subTotal: subTotal,
+                    convenienceFee: convenienceFee,
+                    grandTotal: currentPrice
+                };
+
+                teamsContainer.querySelectorAll('.team-card').forEach(teamCard => {
+                    const teamId = teamCard.dataset.teamId;
+                    const eventSelect = teamCard.querySelector('.team-event-select');
+                    const teamData = {
+                        teamName: formData.get(`team-${teamId}-name`),
+                        eventValue: formData.get(`team-${teamId}-event`),
+                        eventName: eventSelect.options[eventSelect.selectedIndex].text,
+                        members: []
+                    };
+                    teamCard.querySelectorAll('.member-card').forEach(memberCard => {
+                        const mNum = memberCard.dataset.memberNum;
+                        teamData.members.push({
+                            name: formData.get(`team-${teamId}-member-${mNum}-name`),
+                            email: formData.get(`team-${teamId}-member-${mNum}-email`),
+                            phone: formData.get(`team-${teamId}-member-${mNum}-phone`),
+                        });
+                    });
+                    data.teams.push(teamData);
+                });
+                return data;
+            }
+
+            function openRazorpayCheckout(orderId, amount, registrationData, registrationId) {
+                const options = {
+                    "key": "rzp_test_RfyzRdbUJ0YQG0", 
+                    "amount": amount,
+                    "currency": "INR",
+                    "name": "Ignite'26",
+                    "description": "Event Registration",
+                    "order_id": orderId,
+                    "handler": async function (response) {
+                        try {
+                            const verify = await fetch('http://localhost:3000/verify-payment', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    paymentId: response.razorpay_payment_id,
+                                    orderId: orderId,
+                                    registrationId: registrationId
+                                })
+                            });
+                            if (!verify.ok) throw new Error('Verification failed');
+                        } catch (err) {
+                            showModal('Warning', 'Payment successful but server verification failed. Contact support.', 'warning');
+                        }
+                        showInvoice(registrationData, response.razorpay_payment_id);
+                        setSubmitLoading(false);
+                        form.reset();
+                        teamsContainer.innerHTML = '';
+                        teamsContainer.appendChild(noTeamsMessage);
+                        noTeamsMessage.classList.remove('hidden');
+                        updateSummary();
+                    },
+                    "prefill": {
+                        "name": registrationData.organization.contactPerson,
+                        "email": registrationData.organization.contactEmail,
+                        "contact": registrationData.organization.contactPhone
+                    },
+                    "theme": { "color": "#4f46e5" },
+                    "modal": {
+                        "ondismiss": function () {
+                            showModal('Cancelled', 'Payment was cancelled.', 'warning');
+                            setSubmitLoading(false);
+                        }
+                    }
+                };
+                new window.Razorpay(options).open();
+            }
+
+            function setSubmitLoading(isLoading) {
+                if (isLoading) {
+                    submitBtn.disabled = true;
+                    submitBtnText.textContent = 'Processing...';
+                } else {
+                    submitBtn.disabled = false;
+                    submitBtnText.textContent = 'Proceed to Payment';
+                }
+            }
+
+            function showModal(title, message, type = 'success') {
+                modalIcon.innerHTML = (modalIcons[type] || modalIcons.success).svg;
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                modal.classList.remove('hidden');
+            }
+
+            function hideModal() { modal.classList.add('hidden'); }
+
+            function showInvoice(data, paymentId) {
+                invoicePaymentId.textContent = paymentId;
+                invoiceOrgName.textContent = data.organization.name;
+                invoiceOrgPerson.textContent = data.organization.contactPerson;
+                invoiceOrgEmail.textContent = data.organization.contactEmail;
+                invoiceTeamRows.innerHTML = '';
+                
+                data.teams.forEach(team => {
+                    const details = eventDetails[team.eventValue];
+                    const sub = team.eventValue === 'dance' ? details.price : details.price * team.members.length;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="px-4 py-3">${team.teamName}</td>
+                        <td class="px-4 py-3">${team.eventName}</td>
+                        <td class="px-4 py-3 text-center">${team.members.length}</td>
+                        <td class="px-4 py-3 text-right">₹${sub.toLocaleString('en-IN')}</td>
+                    `;
+                    invoiceTeamRows.appendChild(row);
+                });
+
+                invoiceSubtotal.textContent = `₹${data.subTotal.toLocaleString('en-IN')}`;
+                invoiceFee.textContent = `₹${data.convenienceFee.toLocaleString('en-IN')}`;
+                invoiceGrandTotal.textContent = `₹${data.grandTotal.toLocaleString('en-IN')}`;
+                invoiceModal.classList.remove('hidden');
+            }
+
+            function hideInvoice() { invoiceModal.classList.add('hidden'); }
+            function printInvoice() { window.print(); }
+
+            updateSummary();
+        });
+    </script>
+</body>
+</html>
