@@ -799,7 +799,7 @@
                 }
 
                 try {
-                    const response = await fetch('http://proj-jul-26-ajcpexfuejhmhshn.centralindia-01.azurewebsites.net/create-order', {
+                    const response = await fetch('https://proj-jul-26-ajcpexfuejhmhshn.centralindia-01.azurewebsites.net/create-order', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(registrationData)
@@ -866,7 +866,7 @@
                     "order_id": orderId,
                     "handler": async function (response) {
                         try {
-                            const verify = await fetch('http://proj-jul-26-ajcpexfuejhmhshn.centralindia-01.azurewebsites.net/verify-payment', {
+                            const verify = await fetch('https://proj-jul-26-ajcpexfuejhmhshn.centralindia-01.azurewebsites.net/verify-payment', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({

@@ -32,7 +32,7 @@
 
             try {
                 // Call the backend login route
-                const res = await fetch('http://proj-jul-26-ajcpexfuejhmhshn.centralindia-01.azurewebsites.net/api/admin/login', {
+                const res = await fetch('https://proj-jul-26-ajcpexfuejhmhshn.centralindia-01.azurewebsites.net/api/admin/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
