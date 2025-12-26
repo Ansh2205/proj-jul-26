@@ -25,7 +25,7 @@ app.use(express.static(__dirname));
 app.use('/Assets', express.static(path.join(__dirname, 'Assets')));
 
 // --- 2. CONFIGURATION ---
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const MONGO_URI = process.env.MONGO_URI ;
 const JWT_SECRET = process.env.JWT_SECRET ;
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID ;
