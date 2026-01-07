@@ -26,10 +26,10 @@ app.use('/Assets', express.static(path.join(__dirname, 'Assets')));
 
 // --- 2. CONFIGURATION ---
 const PORT = process.env.PORT || 8080;
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://admin-july:Ansh2204@m0.nwuak9s.mongodb.net/?appName=M0";
-const JWT_SECRET = process.env.JWT_SECRET || 'default_jwt_secret_key_change_me';
-const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || 'rzp_test_1DP5mmOlF5G5ag';
-const RAZORPAY_SECRET_KEY = process.env.RAZORPAY_SECRET_KEY || 'CeJqYp42Qk3rlEFj6u7DvZSJ';
+const MONGO_URI = process.env.MONGO_URI ;
+const JWT_SECRET = process.env.JWT_SECRET ;
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID ;
+const RAZORPAY_SECRET_KEY = process.env.RAZORPAY_SECRET_KEY ;
 
 const razorpay = new Razorpay({ key_id: RAZORPAY_KEY_ID, key_secret: RAZORPAY_SECRET_KEY });
 
