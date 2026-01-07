@@ -26,10 +26,10 @@ app.use('/Assets', express.static(path.join(__dirname, 'Assets')));
 
 // --- 2. CONFIGURATION ---
 const PORT = process.env.PORT || 8080;
-const MONGO_URI = process.env.MONGO_URI ;
-const JWT_SECRET = process.env.JWT_SECRET ;
-const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID ;
-const RAZORPAY_SECRET_KEY = process.env.RAZORPAY_SECRET_KEY;
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://admin-july:Ansh2204@m0.nwuak9s.mongodb.net/?appName=M0";
+const JWT_SECRET = process.env.JWT_SECRET || 'default_jwt_secret_key_change_me';
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || 'rzp_test_1DP5mmOlF5G5ag';
+const RAZORPAY_SECRET_KEY = process.env.RAZORPAY_SECRET_KEY || 'CeJqYp42Qk3rlEFj6u7DvZSJ';
 
 const razorpay = new Razorpay({ key_id: RAZORPAY_KEY_ID, key_secret: RAZORPAY_SECRET_KEY });
 
@@ -67,69 +67,155 @@ function authenticateToken(req, res, next) {
     });
 }
 
-// --- 5. HELPER: DESIGNER CERTIFICATE DRAWING ---
+// --- 5. HELPER: VINTAGE 1950s ACADEMIC CERTIFICATE (COMPLEX BORDER EDITION) ---
 const drawEnhancedCertificate = (doc, reg, team, student) => {
     const width = doc.page.width;
     const height = doc.page.height;
-    const dateStr = new Date(reg.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    // 1. Background (Elegant Cream/Parchment)
-    doc.rect(0, 0, width, height).fill('#fffef2');
+    // --- VINTAGE PALETTE ---
+    const c = {
+        bg: '#f0f0eb',       // Aged paper
+        ink: '#2c2c2c',      // Faded black
+        border: '#4a4a4a',   // Dark gray
+        accent: '#666666',   // Medium gray
+    };
 
-    // 2. Ornate Border Design
-    doc.rect(20, 20, width - 40, height - 40).lineWidth(12).stroke('#1e293b'); 
-    doc.rect(40, 40, width - 80, height - 80).lineWidth(1).stroke('#d4af37');
-    doc.rect(45, 45, width - 90, height - 90).lineWidth(0.5).stroke('#d4af37');
+    // 1. Background
+    doc.rect(0, 0, width, height).fill(c.bg);
 
-    const drawCornerDetail = (x, y, rotation) => {
-        doc.save().translate(x, y).rotate(rotation);
-        doc.rect(-15, -15, 30, 30).fill('#1e293b');
-        doc.rect(-8, -8, 16, 16).fill('#d4af37');
+    // 2. Complex Borders (Layered)
+    const m = 30; // Outer margin
+
+    // Layer A: Heavy Outer Frame
+    doc.lineWidth(4).strokeColor(c.border)
+       .rect(m, m, width - m*2, height - m*2).stroke();
+       
+    // Layer B: Thin Middle Gap Line
+    const m2 = m + 6;
+    doc.lineWidth(1).strokeColor(c.border)
+       .rect(m2, m2, width - m2*2, height - m2*2).stroke();
+
+    // Layer C: Ornate Inner Frame with Scrollwork
+    const innerM = m + 18;
+    doc.lineWidth(1.5).strokeColor(c.ink)
+       .rect(innerM, innerM, width - innerM*2, height - innerM*2).stroke();
+
+    // Complex Corner Ornamentation
+    const drawComplexCorner = (x, y, rotate) => {
+        doc.save().translate(x, y).rotate(rotate);
+        doc.strokeColor(c.ink);
+        
+        // Structural Bracket
+        doc.lineWidth(2).path('M 0 0 L 55 0').stroke(); // Horizontal
+        doc.lineWidth(2).path('M 0 0 L 0 55').stroke(); // Vertical
+        
+        // Inner Scroll Curve
+        doc.lineWidth(1);
+        doc.path('M 5 5 Q 35 5 35 35 T 65 65').stroke();
+        
+        // Filigree Details (Leaves/Flourishes)
+        doc.lineWidth(0.5);
+        // Top side flourishes
+        doc.path('M 15 5 Q 20 -5 25 5').stroke();
+        doc.path('M 35 5 Q 40 -5 45 5').stroke();
+        // Left side flourishes
+        doc.path('M 5 15 Q -5 20 5 25').stroke();
+        doc.path('M 5 35 Q -5 40 5 45').stroke();
+        
+        // Corner Dot Accents
+        doc.circle(60, 0, 2.5).fill(c.ink); // Top end
+        doc.circle(0, 60, 2.5).fill(c.ink); // Left end
+        doc.circle(65, 65, 2).fill(c.ink); // Curve end
+        
         doc.restore();
     };
-    drawCornerDetail(20, 20, 0); drawCornerDetail(width-20, 20, 90);
-    drawCornerDetail(width-20, height-20, 180); drawCornerDetail(20, height-20, 270);
 
-    // 3. Top Branding (Reduced font by ~10%)
-    doc.fillColor('#1e293b');
-    doc.fontSize(32).font('Helvetica-Bold').text('PROJECT JULY 26', 0, 60, { align: 'center', characterSpacing: 4 });
+    // Draw corners
+    drawComplexCorner(innerM, innerM, 0);          // TL
+    drawComplexCorner(width - innerM, innerM, 90);  // TR
+    drawComplexCorner(width - innerM, height - innerM, 180); // BR
+    drawComplexCorner(innerM, height - innerM, 270); // BL
+
+
+    // --- 3. TEXT CONTENT (Tightened Spacing) ---
+    // Moved start Y slightly up and reduced increments by ~10%
     
-    // 4. Main Titles (Reduced font by ~10%)
-    doc.fontSize(48).font('Times-Bold').text('CERTIFICATE', 0, 115, { align: 'center', characterSpacing: 6 });
-    doc.fontSize(14).font('Helvetica-Bold').fillColor('#64748b').text('OF EXCELLENCE & PARTICIPATION', 0, 175, { align: 'center', characterSpacing: 3 });
+    let cursorY = 85; 
+
+    // Header
+    doc.font('Times-Roman').fontSize(14).fillColor(c.accent)
+       .text('THE ORGANIZING COMMITTEE OF', 0, cursorY, { align: 'center', characterSpacing: 2 });
     
-    // 5. Presentation Text
-    doc.fontSize(18).font('Times-Italic').fillColor('#475569').text('This is proudly presented to', 0, 225, { align: 'center' });
+    cursorY += 24; // +5%
+    doc.font('Times-Bold').fontSize(30).fillColor(c.ink)
+       .text('KAIROS 2026', 0, cursorY, { align: 'center', characterSpacing: 5 });
+
+    // Intro
+    cursorY += 42; // +5%
+    doc.font('Times-Italic').fontSize(12).fillColor(c.accent)
+       .text('Hereby confers upon', 0, cursorY, { align: 'center' });
+
+    // Recipient Name
+    cursorY += 32; // +5%
+    doc.font('Times-BoldItalic').fontSize(40).fillColor(c.ink)
+       .text(student.name, 0, cursorY, { align: 'center' });
     
-    // 6. Recipient Name
-    doc.fontSize(45).font('Times-BoldItalic').fillColor('#0f172a').text(student.name, 0, 270, { align: 'center' });
-    doc.moveTo(width * 0.2, 330).lineTo(width * 0.8, 330).lineWidth(1).stroke('#d4af37');
+    // Separator Line
+    cursorY += 58; // +5%
+    doc.lineWidth(0.5).strokeColor(c.ink)
+       .moveTo(width/2 - 120, cursorY).lineTo(width/2 + 120, cursorY).stroke();
 
-    // 7. Event Details
-    doc.fontSize(14).font('Helvetica').fillColor('#475569').text('for their active and successful participation in', 0, 360, { align: 'center' });
-    doc.fontSize(25).font('Helvetica-Bold').fillColor('#1e293b').text(team.eventName.toUpperCase(), 0, 390, { align: 'center' });
-    doc.fontSize(14).font('Helvetica-Bold').fillColor('#64748b').text(`Representing Team: ${team.teamName} | ${reg.organization.name}`, 0, 435, { align: 'center' });
+    // Award Body
+    cursorY += 27; // +5%
+    doc.font('Times-Roman').fontSize(18).fillColor(c.ink)
+       .text('The Certificate of Excellence', 0, cursorY, { align: 'center', characterSpacing: 1 });
 
-    // 8. Signature Area
-    const sigY = 500;
-    const sigLineWidth = 180;
-    const sideMargin = 90;
+    cursorY += 32; // +5%
+    doc.font('Times-Italic').fontSize(12).fillColor(c.accent)
+       .text('in recognition of outstanding participation and merit in the field of', 0, cursorY, { align: 'center' });
 
-    // Signature 1: EVENT HEAD (Left)
-    const x1 = sideMargin;
-    doc.moveTo(x1, sigY).lineTo(x1 + sigLineWidth, sigY).lineWidth(1.5).stroke('#1e293b');
-    doc.fontSize(10).font('Times-Bold').fillColor('#1e293b').text('EVENT HEAD', x1, sigY + 12, { width: sigLineWidth, align: 'center' });
-    doc.fontSize(8).font('Helvetica').fillColor('#64748b').text(`Date: ${dateStr}`, x1, sigY + 28, { width: sigLineWidth, align: 'center' });
+    // Event Name
+    cursorY += 37; // +5%
+    doc.font('Times-Bold').fontSize(24).fillColor(c.ink)
+       .text(team.eventName.toUpperCase(), 0, cursorY, { align: 'center' });
 
-    // Signature 2: FOUNDER (Center)
-    const x2 = (width / 2) - (sigLineWidth / 2);
-    doc.moveTo(x2, sigY).lineTo(x2 + sigLineWidth, sigY).stroke('#1e293b');
-    doc.fontSize(10).font('Times-Bold').fillColor('#1e293b').text('FOUNDER', x2, sigY + 12, { width: sigLineWidth, align: 'center' });
+    // Team/Org Details
+    cursorY += 34; // +5%
+    doc.font('Times-Roman').fontSize(11).fillColor(c.accent)
+       .text(`Awarded to the representative of Team "${team.teamName}"`, 0, cursorY, { align: 'center' });
+    
+    cursorY += 15; // +5%
+    const orgName = reg.organization ? reg.organization.name : 'Unknown Organization';
+    doc.text(`Organization: ${orgName}`, 0, cursorY, { align: 'center' });
 
-    // Signature 3: CO-FOUNDER (Right)
-    const x3 = width - sideMargin - sigLineWidth;
-    doc.moveTo(x3, sigY).lineTo(x3 + sigLineWidth, sigY).stroke('#1e293b');
-    doc.fontSize(10).font('Times-Bold').fillColor('#1e293b').text('CO-FOUNDER', x3, sigY + 12, { width: sigLineWidth, align: 'center' });
+
+    // --- 4. BOTTOM SECTION (Signatures Closer) ---
+
+    // Signatures (Moved UP to reduce gap)
+    // Previous was height - 70. Moving to height - 85 closes gap by 15px + text saved space
+    const sigY = height - 85;
+    const colW = 160;
+    
+    const x1 = innerM + 40;
+    const x2 = (width/2) - (colW/2); 
+    const x3 = width - innerM - colW - 40;
+
+    // Helper to draw signature block
+    const drawSig = (x, title) => {
+        doc.lineWidth(0.5).strokeColor(c.ink).opacity(0.7)
+           .moveTo(x, sigY).lineTo(x + colW, sigY).stroke();
+        doc.font('Times-Roman').fontSize(10).fillColor(c.ink).opacity(1)
+           .text(title, x, sigY + 8, { width: colW, align: 'center' });
+        doc.font('Times-Italic').fontSize(8).fillColor(c.accent)
+           .text('Authorized Signature', x, sigY + 20, { width: colW, align: 'center' });
+    };
+
+    // Signatures
+    drawSig(x1, 'FOUNDER');
+    drawSig(x2, 'FOUNDER');
+    drawSig(x3, 'EVENT HEAD');
+
+    // Date Footer Removed as requested
 };
 
 // --- 6. ROUTES ---
@@ -188,14 +274,14 @@ app.get('/api/registrations', authenticateToken, async (req, res) => {
     } catch (err) { res.status(500).json({ error: 'Fetch failed' }); }
 });
 
-// Admin: Bulk PDF List Report (TABULAR & EVENT-WISE) - NO CONTACT INFO
+// Admin: Bulk PDF List Report (PORTRAIT & SIMPLE BORDER)
 app.get('/api/registrations/pdf', authenticateToken, async (req, res) => {
     try {
         const data = await Registration.find({ paymentStatus: 'successful' }).lean();
         if (data.length === 0) return res.status(404).send('No data');
 
-        // Layout: Landscape A4 to fit table columns
-        const doc = new PDFDocument({ size: 'A4', margin: 30, layout: 'landscape' });
+        // Layout: Portrait A4 (Default) - Width ~595pt. Margin 30. Usable ~535.
+        const doc = new PDFDocument({ size: 'A4', margin: 30 }); 
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename="Event_Attendance_List.pdf"');
         doc.pipe(res);
@@ -210,7 +296,7 @@ app.get('/api/registrations/pdf', authenticateToken, async (req, res) => {
                     events[evt].push({
                         name: m.name,
                         team: team.teamName,
-                        org: reg.organization.name, // Only Organization Name
+                        org: reg.organization.name,
                     });
                 });
             });
@@ -223,27 +309,36 @@ app.get('/api/registrations/pdf', authenticateToken, async (req, res) => {
             isFirstPage = false;
 
             // Event Header
-            doc.fillColor('#1e293b').fontSize(18).font('Helvetica-Bold').text(`Event: ${eventName.toUpperCase()}`, { underline: true });
+            doc.fillColor('#1e293b').fontSize(16).font('Helvetica-Bold').text(`Event: ${eventName.toUpperCase()}`, { underline: true });
             doc.fontSize(10).font('Helvetica').text(`Total Participants: ${participants.length}`);
             doc.moveDown();
 
-            // Table Settings
+            // Table Settings for Portrait
             let currentY = doc.y;
-            const itemHeight = 25;
+            const itemHeight = 30; // Slightly taller for readability
+            const tableWidth = 535; // 595 (A4 Width) - 60 (Margins)
             
-            // Re-calculated Column Positions (Wider columns since contact is gone)
-            // Total width ~780
-            const colX = { sno: 30, name: 70, team: 250, org: 430, sig: 610 };
+            // Re-calculated Column X Positions for Portrait
+            const colX = { sno: 30, name: 65, team: 195, org: 325, sig: 455 };
 
-            // Header Row
+            // Header Row (Simple Bordered)
             const drawHeader = (y) => {
-                doc.rect(30, y, 750, itemHeight).fill('#cbd5e1'); // Gray Header Background
+                // Outer Box
+                doc.rect(30, y, tableWidth, itemHeight).strokeColor('#000').lineWidth(1).stroke();
+                
+                // Vertical Separators
+                doc.moveTo(colX.name, y).lineTo(colX.name, y + itemHeight).stroke();
+                doc.moveTo(colX.team, y).lineTo(colX.team, y + itemHeight).stroke();
+                doc.moveTo(colX.org, y).lineTo(colX.org, y + itemHeight).stroke();
+                doc.moveTo(colX.sig, y).lineTo(colX.sig, y + itemHeight).stroke();
+
+                // Header Text
                 doc.fillColor('#000').fontSize(10).font('Helvetica-Bold');
-                doc.text('S.No', colX.sno + 5, y + 8);
-                doc.text('Participant Name', colX.name + 5, y + 8);
-                doc.text('Team Name', colX.team + 5, y + 8);
-                doc.text('Organization', colX.org + 5, y + 8);
-                doc.text('Signature', colX.sig + 5, y + 8);
+                doc.text('S.No', colX.sno + 5, y + 10);
+                doc.text('Name', colX.name + 5, y + 10);
+                doc.text('Team', colX.team + 5, y + 10);
+                doc.text('Organization', colX.org + 5, y + 10);
+                doc.text('Sign', colX.sig + 5, y + 10);
             };
 
             drawHeader(currentY);
@@ -262,20 +357,22 @@ app.get('/api/registrations/pdf', authenticateToken, async (req, res) => {
                     doc.font('Helvetica').fontSize(9);
                 }
 
-                // Row Background (Alternating)
-                if (idx % 2 === 0) doc.rect(30, currentY, 750, itemHeight).fill('#f8fafc');
-                else doc.rect(30, currentY, 750, itemHeight).fill('#ffffff');
+                // Row Outer Box (Simple Border)
+                doc.rect(30, currentY, tableWidth, itemHeight).strokeColor('#000').lineWidth(1).stroke();
 
-                // Row Borders
-                doc.rect(30, currentY, 750, itemHeight).strokeColor('#e2e8f0').lineWidth(0.5).stroke();
+                // Row Vertical Separators
+                doc.moveTo(colX.name, currentY).lineTo(colX.name, currentY + itemHeight).stroke();
+                doc.moveTo(colX.team, currentY).lineTo(colX.team, currentY + itemHeight).stroke();
+                doc.moveTo(colX.org, currentY).lineTo(colX.org, currentY + itemHeight).stroke();
+                doc.moveTo(colX.sig, currentY).lineTo(colX.sig, currentY + itemHeight).stroke();
 
-                // Row Content
-                doc.fillColor('#333');
-                doc.text(idx + 1, colX.sno + 5, currentY + 8);
-                doc.text(p.name, colX.name + 5, currentY + 8, { width: 170, ellipsis: true });
-                doc.text(p.team, colX.team + 5, currentY + 8, { width: 170, ellipsis: true });
-                doc.text(p.org, colX.org + 5, currentY + 8, { width: 170, ellipsis: true });
-                // Signature column is left blank intentionally for manual signing
+                // Content
+                doc.fillColor('#000');
+                doc.text(idx + 1, colX.sno + 5, currentY + 10);
+                doc.text(p.name, colX.name + 5, currentY + 10, { width: 120, ellipsis: true });
+                doc.text(p.team, colX.team + 5, currentY + 10, { width: 120, ellipsis: true });
+                doc.text(p.org, colX.org + 5, currentY + 10, { width: 120, ellipsis: true });
+                // Signature column empty
                 
                 currentY += itemHeight;
             });

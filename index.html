@@ -8,9 +8,9 @@
     <script src="/style-scripts/script.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="/style-scripts/style.css">
+
     <link rel="shortcut icon" href="/Assets/newLogoCropped.png" type="image/x-icon">
-    <title>Project July 26</title>
+    <title>KAIROS 26' | HOME</title>
 
     <style>
       body {
@@ -138,7 +138,7 @@
         </div>
         
         <p class="text-center text-slate-600 mb-8 leading-relaxed">
-            Ignite'26 is looking for visionary <b>Management Members</b>. If you have a spark for event management, let's build something extraordinary together.
+            KAIROS 26' is looking for visionary <b>Management Members</b>. If you have a spark for event management, let's build something extraordinary together.
             <br><br>
             <a href="mailto:guptaansh2205@gmail.com" class="text-indigo-600 font-semibold hover:text-indigo-700 underline decoration-2 underline-offset-2 transition-colors">Get in touch →</a>
         </p>
@@ -155,19 +155,19 @@
 <header class="fixed w-full top-0 z-50 transition-all duration-300 glass border-b border-white/40">
     <div class="container mx-auto flex flex-wrap py-3 px-6 items-center justify-between">
         
-        <a class="flex items-center gap-3 text-slate-900 mb-0 group cursor-pointer" href="#">
+        <a class="flex items-center gap-3 text-slate-900 mb-0 group cursor-pointer" href="index.html">
             <div class="relative">
                 <div class="absolute inset-0 bg-indigo-500 blur-lg opacity-20 group-hover:opacity-40 transition duration-300 rounded-full"></div>
                 <img src="/Assets/newLogoCropped.png" alt="Logo" class="w-10 h-10 relative z-10 drop-shadow-sm">
             </div>
-            <span class="text-xl font-bold tracking-tight group-hover:text-indigo-600 transition duration-300">Ignite'26</span>
+            <span class="text-xl font-bold tracking-tight group-hover:text-indigo-600 transition duration-300">KAIROS 26'</span>
         </a>
         
         <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
           <a href="index.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">Home</a>
           <a href="events.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">Events</a>
           <a href="schedule.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">Schedule</a>
-          <a href="about.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600 cursor-pointer">About</a>
+          <a href="about.html" class="hover:text-indigo-600 transition duration-200 py-2 border-b-2 border-transparent hover:border-indigo-600">About</a>
         </nav>
         
         <div class="hidden md:block">
@@ -176,13 +176,20 @@
             </div>
         </div>
         
-        <!-- Mobile Menu Button (Visible on Small Screens) -->
-        <button class="md:hidden p-2 text-slate-600 hover:text-indigo-600">
+        <button id="mobile-menu-button" class="md:hidden p-2 text-slate-600 hover:text-indigo-600 focus:outline-none">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
         </button>
     </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-xl absolute top-full left-0 w-full animate__animated animate__fadeIn">
+        <nav class="flex flex-col p-4 space-y-2 text-center">
+            <a href="index.html" class="block py-3 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-lg font-bold transition-colors">Home</a>
+            <a href="events.html" class="block py-3 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-lg font-bold transition-colors">Events</a>
+            <a href="schedule.html" class="block py-3 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-lg font-bold transition-colors">Schedule</a>
+            <a href="about.html" class="block py-3 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-lg font-bold transition-colors">About</a>
+        </nav>
+    </div>
 </header>
-  
 <!-- Hero Section -->
 <section class="blended-hero min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
   
@@ -201,7 +208,7 @@
         </div>
 
         <h1 class="font-extrabold text-5xl md:text-7xl lg:text-8xl leading-tight tracking-tight mb-6 text-white drop-shadow-sm">
-            <span class="block text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">Ignite'26</span>
+            <span class="block text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">KAIROS 26'</span>
             <span class="text-3xl md:text-5xl font-light text-slate-300 mt-2 block">Masterclass for Innovation.</span>
         </h1>
         
@@ -241,7 +248,7 @@
             Meet the <span class="text-gradient">Founders</span>
         </h2>
         <p class="mb-16 text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Born from vision and dedication, Ignite'26 is led by passionate individuals committed to fostering the next generation of innovators.
+            Born from vision and dedication, KAIROS 26' is led by passionate individuals committed to fostering the next generation of innovators.
         </p>
         
         <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
@@ -318,7 +325,7 @@
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow duration-300">
                         <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-1 block">09:00 AM</span>
                         <h3 class="text-xl font-bold text-slate-800 mb-2">Opening Ceremony</h3>
-                        <p class="text-slate-600 font-light leading-relaxed">Official welcome address by the founders and introduction to the core themes of Ignite'26.</p>
+                        <p class="text-slate-600 font-light leading-relaxed">Official welcome address by the founders and introduction to the core themes of KAIROS 26'.</p>
                     </div>
                 </div>
 
@@ -501,7 +508,7 @@
                 <img src="/Assets/newLogoCropped.png" alt="" width="30px" height="30px" class="opacity-90">
             </div>
             <div>
-                <span class="block text-xl font-bold text-white">Ignite'26</span>
+                <span class="block text-xl font-bold text-white">KAIROS 26'</span>
                 <span class="text-xs uppercase tracking-widest opacity-60">The Innovation League</span>
             </div>
         </div>
@@ -516,6 +523,34 @@
       </div>
   </div>
 </footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const mobileBtn = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                
+                // Toggle Icon
+                const iconPath = mobileBtn.querySelector('path');
+                if (mobileMenu.classList.contains('hidden')) {
+                    iconPath.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); // Hamburger
+                } else {
+                    iconPath.setAttribute('d', 'M6 18L18 6M6 6l12 12'); // Close X
+                }
+            });
+            
+            // Close when clicking a link
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileBtn.querySelector('path').setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                });
+            });
+        }
+    });
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
